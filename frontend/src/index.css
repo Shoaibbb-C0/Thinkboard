@@ -1,2 +1,214 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: thinkboard --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "thinkboard";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Porcelain surfaces */
+  --color-base-100: #fffdf9;
+  --color-base-200: #f4f3ef;
+  --color-base-300: #dcdad3;
+  --color-base-content: #141516;
+
+  /* Cobalt identity */
+  --color-primary: #315e9d;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #e8eef6;
+  --color-secondary-content: #315e9d;
+
+  --color-accent: #315e9d;
+  --color-accent-content: #ffffff;
+
+  /* Neutral UI */
+  --color-neutral: #686b6e;
+  --color-neutral-content: #ffffff;
+
+  /* Status colors */
+  --color-info: #315e9d;
+  --color-info-content: #ffffff;
+
+  --color-success: #34785a;
+  --color-success-content: #ffffff;
+
+  --color-warning: #b7791f;
+  --color-warning-content: #ffffff;
+
+  --color-error: #a64b4b;
+  --color-error-content: #ffffff;
+
+  /* Shape system */
+  --radius-selector: 0.75rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.125rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-porcelain: #f4f3ef;
+  --color-pearl: #fffdf9;
+  --color-ink: #141516;
+  --color-cobalt: #315e9d;
+  --color-cobalt-dark: #244a7c;
+  --color-cobalt-soft: #e8eef6;
+  --color-warm-gray: #686b6e;
+  --color-soft-border: #dcdad3;
+
+  --shadow-note: 0 16px 38px rgb(38 45 54 / 8%);
+  --shadow-button: 0 8px 20px rgb(49 94 157 / 18%);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-width: 320px;
+    background: #f4f3ef;
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    background: #f4f3ef;
+    color: #141516;
+    font-family:
+      "DM Sans",
+      ui-sans-serif,
+      system-ui,
+      sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: #d8e4f3;
+    color: #141516;
+  }
+}
+
+@layer components {
+  .app-container {
+    width: 100%;
+    max-width: 1152px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .app-card {
+    border: 1px solid #dcdad3;
+    border-radius: 1.125rem;
+    background: #fffdf9;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .app-card:hover {
+    transform: translateY(-4px);
+    border-color: #c3c8cf;
+    box-shadow: var(--shadow-note);
+  }
+
+  .app-heading {
+    color: #141516;
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+  }
+
+  .app-subheading {
+    color: #686b6e;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+
+  .app-label {
+    color: #315e9d;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .primary-action {
+    border: 1px solid #315e9d;
+    border-radius: 0.75rem;
+    background: #315e9d;
+    color: white;
+    box-shadow: var(--shadow-button);
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .primary-action:hover {
+    border-color: #244a7c;
+    background: #244a7c;
+    transform: translateY(-1px);
+  }
+
+  .form-field {
+    width: 100%;
+    border: 1px solid #dcdad3;
+    border-radius: 0.75rem;
+    background: #fffdf9;
+    color: #141516;
+    outline: none;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .form-field:focus {
+    border-color: #315e9d;
+    box-shadow: 0 0 0 4px rgb(49 94 157 / 12%);
+  }
+
+  .form-field::placeholder {
+    color: #989b97;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-container {
+    padding-inline: 1rem;
+  }
+
+  .app-heading {
+    font-size: 3rem;
+  }
+}

@@ -9,14 +9,14 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
-    <div data-theme="dark">
+    <div
+      data-theme="thinkboard"
+      className="min-h-screen bg-base-200 text-base-content"
+    >
       <Routes>
         <Route path="/login" element={<LoginPage />} />
 
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
+        <Route path="/register" element={<RegisterPage />} />
 
         <Route
           path="/"
