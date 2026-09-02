@@ -24,44 +24,47 @@ const Navbar = () => {
 
   return (
     <header className="bg-base-100 py-6">
-      <div className="mx-auto max-w-4xl px-4">
-        <div className="mb-4 flex items-center justify-between rounded-2xl border border-base-content/10 bg-base-100 px-8 py-4 shadow-sm">
-          <div className="flex-1">
-            <Link
-              to="/"
-              className="block font-mono text-3xl font-black tracking-tight text-base-content"
-            >
-              THINKBOARD
-            </Link>
+      <div className="mx-auto max-w-5xl px-4">
+        <div className="rounded-2xl border border-base-content/10 bg-linear-to-r from-base-100 to-base-100 px-8 py-5 shadow-sm backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex-1">
+              <Link
+                to="/"
+                className="inline-block font-mono text-4xl font-black tracking-tight text-base-content transition-transform hover:scale-105"
+              >
+                THINKBOARD
+              </Link>
 
-            {user && (
-              <p className="mt-1 text-xs font-medium tracking-wide text-secondary">
-                Welcome, {user.name}
-              </p>
-            )}
-          </div>
+              {user && (
+                <p className="mt-2 text-xs font-semibold tracking-widest text-secondary uppercase">
+                  Welcome, {user.name.toUpperCase()}
+                </p>
+              )}
+            </div>
 
-          <div className="flex items-center gap-2">
-            <Link
-              to="/create"
-              className="btn btn-sm btn-primary gap-1 px-4"
-            >
-              <PlusIcon className="size-4" />
-              <span className="hidden sm:inline">
-                New Note
-              </span>
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/create"
+                className="flex items-center gap-2 rounded-lg bg-base-content px-4 py-2.5 font-medium text-base-100 transition-all hover:shadow-md active:scale-95"
+              >
+                <PlusIcon className="size-5" />
+                <span className="hidden sm:inline">
+                  New Note
+                </span>
+              </Link>
 
-            <button
-              type="button"
-              className="btn btn-sm btn-ghost"
-              onClick={handleLogout}
-            >
-              <LogOutIcon className="size-4" />
-              <span className="hidden sm:inline">
-                Logout
-              </span>
-            </button>
+              <button
+                type="button"
+                className="rounded-lg border border-base-content/20 px-4 py-2.5 transition-all hover:border-base-content/40 hover:bg-base-200 active:scale-95"
+                onClick={handleLogout}
+                title="Logout"
+              >
+                <LogOutIcon className="size-5" />
+                <span className="hidden sm:inline ml-2">
+                  Logout
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -70,3 +73,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
