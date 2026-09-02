@@ -17,14 +17,14 @@ const App = () => {
   return (
     <div
       data-theme="porcelain"
-      className="min-h-screen bg-base-200 text-base-content"
+      className="min-h-screen bg-linear-to-br from-base-100 via-base-100 to-base-200 text-base-content"
     >
       <SideNavProvider>
         <CalendarProvider>
           <Navbar />
           <SideNavigation />
 
-          <main className="pt-24 md:ml-64">
+          <main className="pt-20 md:ml-64">
             <Routes>
               <Route path="/login" element={<LoginPage />} />
 
@@ -77,6 +77,7 @@ const App = () => {
 };
 
 export default App;
+
 
 
 
