@@ -11,8 +11,7 @@ const RegisterPage = () => {
     password: "",
   });
 
-  const [isSubmitting, setIsSubmitting] =
-    useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -40,57 +39,99 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-base-200 p-4">
-      <div className="card w-full max-w-md bg-base-100 shadow-xl">
-        <form className="card-body" onSubmit={handleSubmit}>
-          <h1 className="card-title justify-center text-3xl">
-            Create your account
-          </h1>
+    <div className="flex min-h-screen items-center justify-center bg-white p-4">
+      <div className="w-full max-w-md border border-gray-200 rounded-lg p-8 bg-white">
+        <form onSubmit={handleSubmit}>
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Create your account
+            </h1>
+            <p className="text-gray-600 mt-1 text-sm">
+              Join Thinkboard to organize your thoughts
+            </p>
+          </div>
 
-          <input
-            name="name"
-            type="text"
-            placeholder="Your name"
-            className="input input-bordered mt-4"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+          {/* Name */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold text-gray-900 mb-2"
+              htmlFor="name"
+            >
+              Full Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Your full name"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email address"
-            className="input input-bordered"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          {/* Email */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold text-gray-900 mb-2"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password — minimum 8 characters"
-            className="input input-bordered"
-            value={formData.password}
-            onChange={handleChange}
-            minLength={8}
-            required
-          />
+          {/* Password */}
+          <div className="mb-6">
+            <label
+              className="block text-sm font-semibold text-gray-900 mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Minimum 8 characters"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              value={formData.password}
+              onChange={handleChange}
+              minLength={8}
+              required
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Must be at least 8 characters
+            </p>
+          </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="btn btn-primary mt-4"
+            className="w-full px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 mb-4"
             disabled={isSubmitting}
           >
-            {isSubmitting
-              ? "Creating account..."
-              : "Create Account"}
+            {isSubmitting ? "Creating account..." : "Create Account"}
           </button>
 
-          <p className="mt-3 text-center">
+          {/* Login Link */}
+          <p className="text-center text-sm text-gray-600">
             Already registered?{" "}
-            <Link to="/login" className="link link-primary">
+            <Link
+              to="/login"
+              className="text-primary font-medium hover:text-primary/90 transition-colors"
+            >
               Sign in
             </Link>
           </p>

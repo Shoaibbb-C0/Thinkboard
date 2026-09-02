@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trash2Icon, PlusIcon, ClockIcon } from "lucide-react";
+import { Trash2, Plus, Clock } from "lucide-react";
 import toast from "react-hot-toast";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -8,20 +8,18 @@ const API_URL = import.meta.env.VITE_API_URL;
 const DayRow = ({ date, notes, onAddNote }) => {
   const dayNotes = notes.filter((note) => {
     const noteDate = new Date(note.createdAt);
-    return (
-      noteDate.toDateString() === date.toDateString()
-    );
+    return noteDate.toDateString() === date.toDateString();
   });
 
   const getCategoryColor = (category) => {
     const colors = [
-      "from-slate-900 to-slate-800",
-      "from-slate-800 to-slate-700",
-      "from-slate-700 to-slate-600",
-      "from-slate-600 to-slate-500",
-      "from-slate-500 to-slate-400",
-      "from-slate-400 to-slate-300",
-      "from-slate-300 to-slate-200",
+      "bg-blue-100 text-blue-700",
+      "bg-purple-100 text-purple-700",
+      "bg-green-100 text-green-700",
+      "bg-red-100 text-red-700",
+      "bg-yellow-100 text-yellow-700",
+      "bg-pink-100 text-pink-700",
+      "bg-gray-100 text-gray-700",
     ];
     const hash = category
       .split("")
@@ -29,33 +27,34 @@ const DayRow = ({ date, notes, onAddNote }) => {
     return colors[hash % colors.length];
   };
 
-  const isToday =
-    date.toDateString() === new Date().toDateString();
+  const isToday = date.toDateString() === new Date().toDateString();
 
   return (
     <div
-      className={`rounded-xl border transition-all duration-200 ${
+      className={`border rounded-lg transition-all ${
         isToday
-          ? "border-base-content/30 bg-base-100 shadow-md"
-          : "border-base-content/10 bg-base-100 hover:border-base-content/20"
+          ? "border-primary bg-blue-50"
+          : "border-gray-200 bg-white hover:border-gray-300"
       }`}
     >
+      {/* Header */}
       <div
-        className={`flex items-center justify-between rounded-t-xl px-6 py-4 ${
-          isToday ? "bg-base-content text-base-100" : "bg-base-200"
+        className={`flex items-center justify-between px-6 py-4 border-b ${
+          isToday
+            ? "border-primary/20 bg-blue-50"
+            : "border-gray-200 bg-gray-50"
         }`}
       >
         <div>
-          <p className="text-sm font-semibold">
+          <p className="font-semibold text-gray-900">
             {date.toLocaleDateString("en-US", {
-              weekday: "long",
+              weekday: "short",
               month: "short",
               day: "numeric",
-              year: "numeric",
             })}
           </p>
           {isToday && (
-            <span className="text-xs opacity-75">
+            <span className="text-xs text-primary font-medium">
               Today
             </span>
           )}
@@ -63,17 +62,18 @@ const DayRow = ({ date, notes, onAddNote }) => {
 
         <button
           onClick={() => onAddNote(date)}
-          className="flex items-center gap-2 rounded-lg bg-base-content px-3 py-2 text-xs font-medium text-base-100 transition-all hover:shadow-md active:scale-95"
+          className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
           title="Add note for this day"
         >
-          <PlusIcon className="size-4" />
+          <Plus className="w-4 h-4" />
           Add
         </button>
       </div>
 
+      {/* Content */}
       <div className="p-6">
         {dayNotes.length === 0 ? (
-          <p className="text-sm text-secondary">
+          <p className="text-sm text-gray-500">
             No notes for this day
           </p>
         ) : (
@@ -82,29 +82,28 @@ const DayRow = ({ date, notes, onAddNote }) => {
               <Link
                 key={note._id}
                 to={`/note/${note._id}`}
-                className="block rounded-lg border border-base-content/10 bg-base-200 p-4 transition-all hover:border-base-content/20 hover:bg-base-100"
+                className="block border border-gray-200 rounded-lg p-4 bg-white hover:bg-gray-50 transition-colors group"
               >
-                <div className="mb-2 flex items-start justify-between gap-3">
-                  <h3 className="flex-1 font-semibold text-base-content line-clamp-2 group-hover:text-primary">
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <h3 className="flex-1 font-medium text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
                     {note.title}
                   </h3>
 
-                  <div className="flex shrink-0 items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     {note.reminder?.enabled && (
-                      <span
-                        className="text-lg"
-                        title="Has reminder"
-                      >
-                        🔔
-                      </span>
+                      <Clock className="w-4 h-4 text-yellow-600" title="Has reminder" />
                     )}
-                    <div className="badge badge-sm badge-primary">
+                    <span
+                      className={`text-xs font-medium px-2.5 py-1 rounded ${getCategoryColor(
+                        note.category
+                      )}`}
+                    >
                       {note.category}
-                    </div>
+                    </span>
                   </div>
                 </div>
 
-                <p className="text-xs text-secondary line-clamp-2">
+                <p className="text-xs text-gray-600 line-clamp-2">
                   {note.content}
                 </p>
               </Link>
@@ -117,3 +116,4 @@ const DayRow = ({ date, notes, onAddNote }) => {
 };
 
 export default DayRow;
+

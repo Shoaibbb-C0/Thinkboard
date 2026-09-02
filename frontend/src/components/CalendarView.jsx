@@ -3,12 +3,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import DayRow from "./DayRow";
 
 const CalendarView = ({ notes, onAddNote }) => {
-  const [currentDate, setCurrentDate] = useState(
-    new Date()
-  );
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [displayDays, setDisplayDays] = useState([]);
 
-  // Generate array of dates to display (current week or 14 days)
   useEffect(() => {
     const days = [];
     const today = new Date(currentDate);
@@ -42,43 +39,45 @@ const CalendarView = ({ notes, onAddNote }) => {
 
   return (
     <div>
-      {/* Month Navigation */}
-      <div className="mb-8 flex items-center justify-between rounded-xl border border-base-content/10 bg-base-100 p-6 shadow-sm">
-        <div>
-          <h2 className="text-2xl font-bold text-base-content">
-            {currentDate.toLocaleDateString("en-US", {
-              month: "long",
-              year: "numeric",
-            })}
-          </h2>
-          <p className="text-sm text-secondary">
-            Showing 14 days starting today
-          </p>
-        </div>
+      {/* Navigation Header */}
+      <div className="mb-8 border border-gray-200 rounded-lg p-6 bg-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {currentDate.toLocaleDateString("en-US", {
+                month: "long",
+                year: "numeric",
+              })}
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Showing 14 days from today
+            </p>
+          </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={goToPreviousWeek}
-            className="rounded-lg border border-base-content/20 p-3 transition-all hover:border-base-content/40 hover:bg-base-200 active:scale-95"
-            title="Previous 2 weeks"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={goToPreviousWeek}
+              className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600"
+              title="Previous 2 weeks"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-          <button
-            onClick={goToToday}
-            className="rounded-lg bg-base-content px-4 py-2 font-medium text-base-100 transition-all hover:shadow-md active:scale-95"
-          >
-            Today
-          </button>
+            <button
+              onClick={goToToday}
+              className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            >
+              Today
+            </button>
 
-          <button
-            onClick={goToNextWeek}
-            className="rounded-lg border border-base-content/20 p-3 transition-all hover:border-base-content/40 hover:bg-base-200 active:scale-95"
-            title="Next 2 weeks"
-          >
-            <ChevronRight className="size-5" />
-          </button>
+            <button
+              onClick={goToNextWeek}
+              className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600"
+              title="Next 2 weeks"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -98,3 +97,4 @@ const CalendarView = ({ notes, onAddNote }) => {
 };
 
 export default CalendarView;
+

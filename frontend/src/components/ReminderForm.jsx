@@ -34,28 +34,46 @@ const ReminderForm = ({ initialReminder, onReminderChange }) => {
   };
 
   return (
-    <div className="form-control mb-6">
-      <label className="label cursor-pointer">
-        <span className="label-text">Set Reminder</span>
+    <div>
+      {/* Toggle Reminder */}
+      <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
         <input
           type="checkbox"
-          className="checkbox"
+          id="reminder-toggle"
+          className="w-5 h-5 text-primary bg-white border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 cursor-pointer"
           checked={reminderEnabled}
           onChange={(e) => handleToggle(e.target.checked)}
         />
-      </label>
+        <label
+          htmlFor="reminder-toggle"
+          className="text-sm font-medium text-gray-900 cursor-pointer flex-1"
+        >
+          Set a reminder
+        </label>
+      </div>
 
+      {/* Date Time Input */}
       {reminderEnabled && (
-        <input
-          type="datetime-local"
-          value={reminderDateTime}
-          onChange={handleDateTimeChange}
-          className="input input-bordered mt-2 w-full"
-          required={reminderEnabled}
-        />
+        <div className="mt-4">
+          <label
+            className="block text-sm font-semibold text-gray-900 mb-2"
+            htmlFor="reminder-datetime"
+          >
+            Reminder Date & Time
+          </label>
+          <input
+            id="reminder-datetime"
+            type="datetime-local"
+            value={reminderDateTime}
+            onChange={handleDateTimeChange}
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            required={reminderEnabled}
+          />
+        </div>
       )}
     </div>
   );
 };
 
 export default ReminderForm;
+
