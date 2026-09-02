@@ -21,55 +21,59 @@ const App = () => {
     >
       <SideNavProvider>
         <CalendarProvider>
-          <Navbar />
-          <SideNavigation />
+          <div className="flex gap-4 p-4">
+            {/* Left Navbar */}
+            <Navbar />
+            <SideNavigation />
 
-          <main className="pt-20 md:ml-64">
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
+            {/* Main Content */}
+            <main className="flex-1">
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
 
-              <Route
-                path="/register"
-                element={<RegisterPage />}
-              />
+                <Route
+                  path="/register"
+                  element={<RegisterPage />}
+                />
 
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <HomePage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/calendar"
-                element={
-                  <ProtectedRoute>
-                    <CalendarPage />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/calendar"
+                  element={
+                    <ProtectedRoute>
+                      <CalendarPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/create"
-                element={
-                  <ProtectedRoute>
-                    <CreatePage />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/create"
+                  element={
+                    <ProtectedRoute>
+                      <CreatePage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/note/:id"
-                element={
-                  <ProtectedRoute>
-                    <NoteDetailPage />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </main>
+                <Route
+                  path="/note/:id"
+                  element={
+                    <ProtectedRoute>
+                      <NoteDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </main>
+          </div>
         </CalendarProvider>
       </SideNavProvider>
     </div>
@@ -77,6 +81,7 @@ const App = () => {
 };
 
 export default App;
+
 
 
 

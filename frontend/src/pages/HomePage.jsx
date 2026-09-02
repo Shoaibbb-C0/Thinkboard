@@ -77,10 +77,10 @@ const HomePage = () => {
     <div>
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
         <div className="mb-12">
-          <h1 className="mb-2 text-3xl font-bold tracking-tight text-base-content">
+          <h1 className="mb-2 text-3xl font-['Poppins'] font-bold tracking-tight text-base-content">
             My Notes
           </h1>
-          <p className="text-base text-secondary">
+          <p className="text-base text-base-content/60 font-['Outfit']">
             Organize and manage your thoughts
           </p>
         </div>
@@ -97,8 +97,8 @@ const HomePage = () => {
 
         {!isLoading && !isRateLimited &&
           filteredNotes.length === 0 && (
-            <div className="rounded-2xl border border-base-content/10 bg-base-100 py-16 text-center">
-              <p className="text-lg text-secondary">
+            <div className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl py-16 text-center shadow-lg">
+              <p className="text-lg font-['Outfit'] text-base-content/60">
                 No notes yet. Create your first note
                 to get started.
               </p>
@@ -112,47 +112,45 @@ const HomePage = () => {
                 <Link
                   key={note._id}
                   to={`/note/${note._id}`}
-                  className="group rounded-xl border border-base-content/10 bg-base-100 shadow-sm transition-all duration-200 hover:border-base-content/20 hover:shadow-md hover:-translate-y-1"
+                  className="group rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-lg transition-all duration-200 hover:border-white/30 hover:shadow-xl hover:bg-white/15 p-6 flex flex-col"
                 >
-                  <div className="flex h-full flex-col p-6">
-                    <div className="mb-4 flex items-start justify-between gap-3">
-                      <h2 className="flex-1 text-xl font-semibold text-base-content line-clamp-2 group-hover:text-primary transition-colors">
-                        {note.title}
-                      </h2>
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <h2 className="flex-1 text-lg font-['Poppins'] font-semibold text-base-content line-clamp-2 group-hover:text-primary transition-colors">
+                      {note.title}
+                    </h2>
 
-                      <div className="shrink-0 space-x-2 flex items-center">
-                        {note.reminder?.enabled && (
-                          <span
-                            className="text-lg"
-                            title="Has reminder"
-                          >
-                            🔔
-                          </span>
-                        )}
-                        <div
-                          className={`badge badge-sm ${getCategoryColor(
-                            note.category
-                          )}`}
+                    <div className="shrink-0 space-x-2 flex items-center">
+                      {note.reminder?.enabled && (
+                        <span
+                          className="text-lg"
+                          title="Has reminder"
                         >
-                          {note.category}
-                        </div>
+                          🔔
+                        </span>
+                      )}
+                      <div
+                        className={`badge badge-sm ${getCategoryColor(
+                          note.category
+                        )}`}
+                      >
+                        {note.category}
                       </div>
                     </div>
-
-                    <p className="mb-6 flex-1 text-sm text-secondary line-clamp-3">
-                      {note.content}
-                    </p>
-
-                    <p className="text-xs font-medium text-secondary/60">
-                      {new Date(
-                        note.createdAt
-                      ).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
                   </div>
+
+                  <p className="mb-6 flex-1 text-sm font-['Outfit'] text-base-content/70 line-clamp-3">
+                    {note.content}
+                  </p>
+
+                  <p className="text-xs font-['Outfit'] font-medium text-base-content/50">
+                    {new Date(
+                      note.createdAt
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
                 </Link>
               ))}
             </div>
@@ -163,5 +161,6 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
 
 
