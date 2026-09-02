@@ -2,14 +2,17 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   LogOutIcon,
   PlusIcon,
+  Menu,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { useAuth } from "../context/AuthContext";
+import { useSideNav } from "../context/SideNavContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { toggleSideNav } = useSideNav();
 
   const handleLogout = async () => {
     try {
@@ -23,24 +26,33 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-base-100 py-6">
-      <div className="mx-auto max-w-5xl px-4">
-        <div className="rounded-2xl border border-base-content/10 bg-linear-to-r from-base-100 to-base-100 px-8 py-5 shadow-sm backdrop-blur-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-base-100 py-4 shadow-sm">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="rounded-2xl border border-base-content/10 bg-linear-to-r from-base-100 to-base-100 px-6 py-4 shadow-sm">
           <div className="flex items-center justify-between gap-6">
-            <div className="flex-1">
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="rounded-lg p-2 transition-all hover:bg-base-200 active:scale-95 md:hidden"
+                onClick={toggleSideNav}
+                title="Toggle sidebar"
+              >
+                <Menu className="size-5" />
+              </button>
+
               <Link
                 to="/"
                 className="inline-block font-mono text-4xl font-black tracking-tight text-base-content transition-transform hover:scale-105"
               >
                 THINKBOARD
               </Link>
-
-              {user && (
-                <p className="mt-2 text-xs font-semibold tracking-widest text-secondary uppercase">
-                  Welcome, {user.name.toUpperCase()}
-                </p>
-              )}
             </div>
+
+            {user && (
+              <p className="hidden text-xs font-semibold tracking-widest text-secondary uppercase sm:block">
+                Welcome, {user.name.toUpperCase()}
+              </p>
+            )}
 
             <div className="flex items-center gap-3">
               <Link
@@ -73,5 +85,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 

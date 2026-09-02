@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
 import RateLimitedUI from "../components/RateLimitedUI";
 import CategoryTabs from "../components/CategoryTabs";
 import { useCategory } from "../context/CategoryContext";
@@ -75,25 +74,35 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <div>
+      <main className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
+        <div className="mb-12">
+          <h1 className="mb-2 text-3xl font-bold tracking-tight text-base-content">
+            My Notes
+          </h1>
+          <p className="text-base text-secondary">
+            Organize and manage your thoughts
+          </p>
+        </div>
 
-      {isRateLimited && <RateLimitedUI />}
+        {isRateLimited && <RateLimitedUI />}
 
-      <main className="mx-auto max-w-6xl p-4">
         <CategoryTabs />
 
         {isLoading && (
-          <p className="text-center text-lg">
-            Loading notes...
-          </p>
+          <div className="flex items-center justify-center py-16">
+            <span className="loading loading-spinner loading-lg" />
+          </div>
         )}
 
         {!isLoading && !isRateLimited &&
           filteredNotes.length === 0 && (
-            <p className="text-center text-lg">
-              No notes yet. Create your first note.
-            </p>
+            <div className="rounded-2xl border border-base-content/10 bg-base-100 py-16 text-center">
+              <p className="text-lg text-secondary">
+                No notes yet. Create your first note
+                to get started.
+              </p>
+            </div>
           )}
 
         {!isLoading && !isRateLimited &&
@@ -103,40 +112,46 @@ const HomePage = () => {
                 <Link
                   key={note._id}
                   to={`/note/${note._id}`}
-                  className="card border border-base-content/10 bg-base-100 shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+                  className="group rounded-xl border border-base-content/10 bg-base-100 shadow-sm transition-all duration-200 hover:border-base-content/20 hover:shadow-md hover:-translate-y-1"
                 >
-                  <div className="card-body">
-                    <div className="mb-2 flex items-center justify-between">
-                      <h2 className="card-title">
+                  <div className="flex h-full flex-col p-6">
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <h2 className="flex-1 text-xl font-semibold text-base-content line-clamp-2 group-hover:text-primary transition-colors">
                         {note.title}
                       </h2>
 
-                      <div
-                        className={`badge ${getCategoryColor(
-                          note.category
-                        )}`}
-                      >
-                        {note.category}
+                      <div className="shrink-0 space-x-2 flex items-center">
+                        {note.reminder?.enabled && (
+                          <span
+                            className="text-lg"
+                            title="Has reminder"
+                          >
+                            🔔
+                          </span>
+                        )}
+                        <div
+                          className={`badge badge-sm ${getCategoryColor(
+                            note.category
+                          )}`}
+                        >
+                          {note.category}
+                        </div>
                       </div>
                     </div>
 
-                    <p className="line-clamp-3">
+                    <p className="mb-6 flex-1 text-sm text-secondary line-clamp-3">
                       {note.content}
                     </p>
 
-                    <div className="mt-4 flex items-center justify-between">
-                      <p className="text-xs opacity-60">
-                        {new Date(
-                          note.createdAt
-                        ).toLocaleDateString()}
-                      </p>
-
-                      {note.reminder?.enabled && (
-                        <span className="text-lg">
-                          🔔
-                        </span>
-                      )}
-                    </div>
+                    <p className="text-xs font-medium text-secondary/60">
+                      {new Date(
+                        note.createdAt
+                      ).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -148,4 +163,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
 

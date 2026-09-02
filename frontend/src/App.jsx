@@ -1,5 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar";
+import SideNavigation from "./components/SideNavigation";
+import { SideNavProvider } from "./context/SideNavContext";
+
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
@@ -13,41 +17,49 @@ const App = () => {
       data-theme="minimalist"
       className="min-h-screen bg-base-200 text-base-content"
     >
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
+      <SideNavProvider>
+        <Navbar />
+        <SideNavigation />
 
-        <Route path="/register" element={<RegisterPage />} />
+        <main className="pt-24 md:ml-64">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
+            <Route path="/register" element={<RegisterPage />} />
 
-        <Route
-          path="/create"
-          element={
-            <ProtectedRoute>
-              <CreatePage />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route
-          path="/note/:id"
-          element={
-            <ProtectedRoute>
-              <NoteDetailPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+            <Route
+              path="/create"
+              element={
+                <ProtectedRoute>
+                  <CreatePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/note/:id"
+              element={
+                <ProtectedRoute>
+                  <NoteDetailPage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </main>
+      </SideNavProvider>
     </div>
   );
 };
 
 export default App;
+
 
