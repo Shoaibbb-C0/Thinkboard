@@ -8,27 +8,27 @@ export default defineConfig({
   daisyui: {
     themes: [
       {
-        minimalist: {
-          "primary": "#111111",
-          "primary-content": "#F5F5F2",
-          "secondary": "#6B6B67",
-          "secondary-content": "#F5F5F2",
-          "accent": "#111111",
-          "accent-content": "#F5F5F2",
-          "neutral": "#EAEAE5",
-          "neutral-content": "#111111",
-          "base-100": "#F5F5F2",
-          "base-200": "#EAEAE5",
-          "base-300": "#D9D9D3",
-          "base-content": "#111111",
-          "info": "#111111",
-          "info-content": "#F5F5F2",
-          "success": "#111111",
-          "success-content": "#F5F5F2",
-          "warning": "#111111",
-          "warning-content": "#F5F5F2",
-          "error": "#111111",
-          "error-content": "#F5F5F2",
+        porcelain: {
+          "primary": "#315E9D",
+          "primary-content": "#FFFFFF",
+          "secondary": "#171717",
+          "secondary-content": "#FFFFFF",
+          "accent": "#315E9D",
+          "accent-content": "#FFFFFF",
+          "neutral": "#F0EFEB",
+          "neutral-content": "#171717",
+          "base-100": "#FFFFFF",
+          "base-200": "#FAF9F6",
+          "base-300": "#F0EFEB",
+          "base-content": "#171717",
+          "info": "#315E9D",
+          "info-content": "#FFFFFF",
+          "success": "#315E9D",
+          "success-content": "#FFFFFF",
+          "warning": "#315E9D",
+          "warning-content": "#FFFFFF",
+          "error": "#315E9D",
+          "error-content": "#FFFFFF",
         }
       }
     ]

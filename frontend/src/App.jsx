@@ -16,7 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const App = () => {
   return (
     <div
-      data-theme="minimalist"
+      data-theme="porcelain"
       className="min-h-screen bg-base-200 text-base-content"
     >
       <SideNavProvider>
@@ -77,6 +77,7 @@ const App = () => {
 };
 
 export default App;
+
 
 
 
