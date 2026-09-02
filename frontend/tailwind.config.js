@@ -8,14 +8,14 @@ export default defineConfig({
   daisyui: {
     themes: [
       {
-        porcelain: {
+        notion: {
           "primary": "#315E9D",
           "primary-content": "#FFFFFF",
           "secondary": "#171717",
           "secondary-content": "#FFFFFF",
           "accent": "#315E9D",
           "accent-content": "#FFFFFF",
-          "neutral": "#F0EFEB",
+          "neutral": "#FAF9F6",
           "neutral-content": "#171717",
           "base-100": "#FFFFFF",
           "base-200": "#FAF9F6",

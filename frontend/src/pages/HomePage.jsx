@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 import RateLimitedUI from "../components/RateLimitedUI";
 import CategoryTabs from "../components/CategoryTabs";
@@ -9,12 +10,10 @@ import { useReminders } from "../hooks/useReminders";
 const HomePage = () => {
   const [notes, setNotes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isRateLimited, setIsRateLimited] =
-    useState(false);
+  const [isRateLimited, setIsRateLimited] = useState(false);
 
   const { selectedCategory } = useCategory();
 
-  // Set up reminders
   useReminders(notes);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const HomePage = () => {
     fetchNotes();
   }, []);
 
-  // Filter notes by selected category
   const filteredNotes =
     selectedCategory === "All"
       ? notes
@@ -56,16 +54,15 @@ const HomePage = () => {
           (note) => note.category === selectedCategory
         );
 
-  // Get category color (deterministic based on category name)
   const getCategoryColor = (category) => {
     const colors = [
-      "badge-primary",
-      "badge-secondary",
-      "badge-accent",
-      "badge-info",
-      "badge-success",
-      "badge-warning",
-      "badge-error",
+      "bg-blue-100 text-blue-700",
+      "bg-purple-100 text-purple-700",
+      "bg-green-100 text-green-700",
+      "bg-red-100 text-red-700",
+      "bg-yellow-100 text-yellow-700",
+      "bg-pink-100 text-pink-700",
+      "bg-gray-100 text-gray-700",
     ];
     const hash = category
       .split("")
@@ -74,20 +71,32 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <main className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
-        <div className="mb-12">
-          <h1 className="mb-2 text-3xl font-['Poppins'] font-bold tracking-tight text-base-content">
-            My Notes
-          </h1>
-          <p className="text-base text-base-content/60 font-['Outfit']">
-            Organize and manage your thoughts
-          </p>
+    <div className="min-h-full md:ml-64">
+      <div className="max-w-6xl mx-auto px-8 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-base-content mb-2">
+              My Notes
+            </h1>
+            <p className="text-gray-600">
+              Organize and manage your thoughts
+            </p>
+          </div>
+
+          <Link
+            to="/create"
+            className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
+            <Plus className="size-5" />
+            New Note
+          </Link>
         </div>
 
         {isRateLimited && <RateLimitedUI />}
 
-        <CategoryTabs />
+        <div className="mb-8">
+          <CategoryTabs />
+        </div>
 
         {isLoading && (
           <div className="flex items-center justify-center py-16">
@@ -95,72 +104,65 @@ const HomePage = () => {
           </div>
         )}
 
-        {!isLoading && !isRateLimited &&
-          filteredNotes.length === 0 && (
-            <div className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl py-16 text-center shadow-lg">
-              <p className="text-lg font-['Outfit'] text-base-content/60">
-                No notes yet. Create your first note
-                to get started.
-              </p>
-            </div>
-          )}
+        {!isLoading && !isRateLimited && filteredNotes.length === 0 && (
+          <div className="border border-gray-200 rounded-lg p-12 text-center bg-gray-50">
+            <p className="text-gray-600">
+              No notes yet. Create your first note to get started.
+            </p>
+          </div>
+        )}
 
-        {!isLoading && !isRateLimited &&
-          filteredNotes.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredNotes.map((note) => (
-                <Link
-                  key={note._id}
-                  to={`/note/${note._id}`}
-                  className="group rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-lg transition-all duration-200 hover:border-white/30 hover:shadow-xl hover:bg-white/15 p-6 flex flex-col"
-                >
-                  <div className="mb-4 flex items-start justify-between gap-3">
-                    <h2 className="flex-1 text-lg font-['Poppins'] font-semibold text-base-content line-clamp-2 group-hover:text-primary transition-colors">
-                      {note.title}
-                    </h2>
+        {!isLoading && !isRateLimited && filteredNotes.length > 0 && (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredNotes.map((note) => (
+              <Link
+                key={note._id}
+                to={`/note/${note._id}`}
+                className="border border-gray-200 rounded-lg p-6 bg-white hover:shadow-md transition-shadow group"
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <h2 className="text-lg font-semibold text-base-content group-hover:text-primary transition-colors line-clamp-2">
+                    {note.title}
+                  </h2>
 
-                    <div className="shrink-0 space-x-2 flex items-center">
-                      {note.reminder?.enabled && (
-                        <span
-                          className="text-lg"
-                          title="Has reminder"
-                        >
-                          🔔
-                        </span>
-                      )}
-                      <div
-                        className={`badge badge-sm ${getCategoryColor(
-                          note.category
-                        )}`}
-                      >
-                        {note.category}
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {note.reminder?.enabled && (
+                      <span className="text-lg" title="Has reminder">
+                        🔔
+                      </span>
+                    )}
+                    <span
+                      className={`text-xs font-medium px-2 py-1 rounded ${getCategoryColor(
+                        note.category
+                      )}`}
+                    >
+                      {note.category}
+                    </span>
                   </div>
+                </div>
 
-                  <p className="mb-6 flex-1 text-sm font-['Outfit'] text-base-content/70 line-clamp-3">
-                    {note.content}
-                  </p>
+                <p className="text-sm text-gray-600 line-clamp-3 mb-4">
+                  {note.content}
+                </p>
 
-                  <p className="text-xs font-['Outfit'] font-medium text-base-content/50">
-                    {new Date(
-                      note.createdAt
-                    ).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          )}
-      </main>
+                <p className="text-xs text-gray-500">
+                  {new Date(note.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 export default HomePage;
+
 
 
 
