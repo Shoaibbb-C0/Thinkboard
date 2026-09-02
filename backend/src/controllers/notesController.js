@@ -52,9 +52,58 @@ export async function getNoteById(req, res) {
   }
 }
 
+export async function getNotesByCategory(req, res) {
+  try {
+    const { category } = req.params;
+
+    if (!category || category.trim() === "") {
+      return res.status(400).json({
+        message: "Category is required",
+      });
+    }
+
+    const notes = await Note.find({
+      userId: req.user._id,
+      category: category,
+    }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching notes by category:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}
+
+export async function getCategories(req, res) {
+  try {
+    const categories = await Note.distinct("category", {
+      userId: req.user._id,
+    });
+
+    // Always include predefined categories
+    const predefined = ["Personal", "College Work", "Office", "Projects"];
+    const allCategories = [
+      ...new Set([...predefined, ...categories]),
+    ].sort();
+
+    return res.status(200).json(allCategories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}
+
 export async function createNote(req, res) {
   try {
-    const { title, content } = req.body;
+    const { title, content, category, reminder } = req.body;
 
     if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({
@@ -62,11 +111,22 @@ export async function createNote(req, res) {
       });
     }
 
-    const note = await Note.create({
+    const noteData = {
       title: title.trim(),
       content: content.trim(),
       userId: req.user._id,
-    });
+      category: category?.trim() || "Personal",
+    };
+
+    // Handle reminder if provided
+    if (reminder) {
+      noteData.reminder = {
+        enabled: reminder.enabled || false,
+        dateTime: reminder.dateTime || null,
+      };
+    }
+
+    const note = await Note.create(noteData);
 
     return res.status(201).json(note);
   } catch (error) {
@@ -86,7 +146,7 @@ export async function updateNote(req, res) {
       });
     }
 
-    const { title, content } = req.body;
+    const { title, content, category, reminder } = req.body;
 
     if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({
@@ -94,15 +154,26 @@ export async function updateNote(req, res) {
       });
     }
 
+    const updateData = {
+      title: title.trim(),
+      content: content.trim(),
+      category: category?.trim() || "Personal",
+    };
+
+    // Handle reminder if provided
+    if (reminder) {
+      updateData.reminder = {
+        enabled: reminder.enabled || false,
+        dateTime: reminder.dateTime || null,
+      };
+    }
+
     const updatedNote = await Note.findOneAndUpdate(
       {
         _id: req.params.id,
         userId: req.user._id,
       },
-      {
-        title: title.trim(),
-        content: content.trim(),
-      },
+      updateData,
       {
         new: true,
         runValidators: true,

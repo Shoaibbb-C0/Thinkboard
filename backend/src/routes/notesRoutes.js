@@ -3,6 +3,8 @@ import express from "express";
 import {
   getAllNotes,
   getNoteById,
+  getNotesByCategory,
+  getCategories,
   createNote,
   updateNote,
   deleteNote,
@@ -18,6 +20,8 @@ const router = express.Router();
 router.use(protectRoute);
 
 router.get("/", getAllNotes);
+router.get("/categories", getCategories);
+router.get("/category/:category", getNotesByCategory);
 router.get("/:id", getNoteById);
 router.post("/", createNote);
 router.put("/:id", updateNote);

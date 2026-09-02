@@ -22,6 +22,24 @@ const noteSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+
+    category: {
+      type: String,
+      default: "Personal",
+      trim: true,
+      maxlength: 50,
+    },
+
+    reminder: {
+      enabled: {
+        type: Boolean,
+        default: false,
+      },
+      dateTime: {
+        type: Date,
+        default: null,
+      },
+    },
   },
   {
     timestamps: true,

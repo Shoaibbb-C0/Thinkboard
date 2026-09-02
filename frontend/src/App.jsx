@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
+    
     <div
       data-theme="thinkboard"
       className="min-h-screen bg-base-200 text-base-content"

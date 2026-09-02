@@ -9,6 +9,8 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import ReminderForm from "../components/ReminderForm";
+import { useCategory } from "../context/CategoryContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,9 +19,14 @@ const NoteDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showCustomInput, setShowCustomInput] = useState(
+    false
+  );
+  const [customCategory, setCustomCategory] = useState("");
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const { categories } = useCategory();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -40,6 +47,12 @@ const NoteDetailPage = () => {
         }
 
         setNote(data);
+        setShowCustomInput(
+          !categories.includes(data.category)
+        );
+        if (!categories.includes(data.category)) {
+          setCustomCategory(data.category);
+        }
       } catch (error) {
         console.error("Error fetching note:", error);
         toast.error(error.message);
@@ -49,13 +62,36 @@ const NoteDetailPage = () => {
     };
 
     fetchNote();
-  }, [id]);
+  }, [id, categories]);
+
+  const handleReminderChange = (reminderData) => {
+    setNote({
+      ...note,
+      reminder: reminderData,
+    });
+  };
+
+  const handleCategoryChange = (newCategory) => {
+    setNote({
+      ...note,
+      category: newCategory,
+    });
+  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
 
     if (!note.title.trim() || !note.content.trim()) {
       toast.error("Title and content are required");
+      return;
+    }
+
+    const finalCategory = showCustomInput
+      ? customCategory.trim()
+      : note.category;
+
+    if (!finalCategory) {
+      toast.error("Please select or enter a category");
       return;
     }
 
@@ -73,6 +109,8 @@ const NoteDetailPage = () => {
           body: JSON.stringify({
             title: note.title,
             content: note.content,
+            category: finalCategory,
+            reminder: note.reminder,
           }),
         }
       );
@@ -204,6 +242,77 @@ const NoteDetailPage = () => {
                   required
                 />
               </div>
+
+              <div className="form-control mb-4">
+                <label className="label" htmlFor="category">
+                  <span className="label-text">
+                    Category
+                  </span>
+                </label>
+
+                {!showCustomInput ? (
+                  <div className="flex gap-2">
+                    <select
+                      id="category"
+                      className="select select-bordered w-full"
+                      value={note.category}
+                      onChange={(event) =>
+                        handleCategoryChange(
+                          event.target.value
+                        )
+                      }
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() =>
+                        setShowCustomInput(true)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Enter custom category"
+                      className="input input-bordered w-full"
+                      value={customCategory}
+                      onChange={(event) =>
+                        setCustomCategory(
+                          event.target.value
+                        )
+                      }
+                      maxLength={50}
+                    />
+
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() =>
+                        setShowCustomInput(false)
+                      }
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <ReminderForm
+                initialReminder={note.reminder}
+                onReminderChange={
+                  handleReminderChange
+                }
+              />
 
               <div className="form-control mb-6">
                 <label

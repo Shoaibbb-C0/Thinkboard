@@ -2,13 +2,27 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import ReminderForm from "../components/ReminderForm";
+import { useCategory } from "../context/CategoryContext";
 
 const CreatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("Personal");
+  const [customCategory, setCustomCategory] = useState("");
+  const [reminder, setReminder] = useState({
+    enabled: false,
+    dateTime: null,
+  });
   const [isSaving, setIsSaving] = useState(false);
+  const [showCustomInput, setShowCustomInput] = useState(false);
 
   const navigate = useNavigate();
+  const { categories } = useCategory();
+
+  const handleReminderChange = (reminderData) => {
+    setReminder(reminderData);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,20 +32,34 @@ const CreatePage = () => {
       return;
     }
 
+    const finalCategory = showCustomInput
+      ? customCategory.trim()
+      : category;
+
+    if (!finalCategory) {
+      toast.error("Please select or enter a category");
+      return;
+    }
+
     setIsSaving(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          title,
-          content,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/notes`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            title,
+            content,
+            category: finalCategory,
+            reminder,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create note");
@@ -57,7 +85,9 @@ const CreatePage = () => {
 
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <h1 className="card-title mb-4 text-2xl">Create New Note</h1>
+            <h1 className="card-title mb-4 text-2xl">
+              Create New Note
+            </h1>
 
             <form onSubmit={handleSubmit}>
               <div className="form-control mb-4">
@@ -71,13 +101,87 @@ const CreatePage = () => {
                   placeholder="Enter note title"
                   className="input input-bordered w-full"
                   value={title}
-                  onChange={(event) => setTitle(event.target.value)}
+                  onChange={(event) =>
+                    setTitle(event.target.value)
+                  }
+                  maxLength={100}
                 />
               </div>
 
+              <div className="form-control mb-4">
+                <label className="label" htmlFor="category">
+                  <span className="label-text">
+                    Category
+                  </span>
+                </label>
+
+                {!showCustomInput ? (
+                  <div className="flex gap-2">
+                    <select
+                      id="category"
+                      className="select select-bordered w-full"
+                      value={category}
+                      onChange={(event) =>
+                        setCategory(event.target.value)
+                      }
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() =>
+                        setShowCustomInput(true)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Enter custom category"
+                      className="input input-bordered w-full"
+                      value={customCategory}
+                      onChange={(event) =>
+                        setCustomCategory(
+                          event.target.value
+                        )
+                      }
+                      maxLength={50}
+                    />
+
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() =>
+                        setShowCustomInput(false)
+                      }
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <ReminderForm
+                initialReminder={reminder}
+                onReminderChange={
+                  handleReminderChange
+                }
+              />
+
               <div className="form-control mb-6">
                 <label className="label" htmlFor="content">
-                  <span className="label-text">Content</span>
+                  <span className="label-text">
+                    Content
+                  </span>
                 </label>
 
                 <textarea
@@ -85,7 +189,10 @@ const CreatePage = () => {
                   placeholder="Write your note..."
                   className="textarea textarea-bordered min-h-40 w-full"
                   value={content}
-                  onChange={(event) => setContent(event.target.value)}
+                  onChange={(event) =>
+                    setContent(event.target.value)
+                  }
+                  maxLength={5000}
                 />
               </div>
 
@@ -107,3 +214,4 @@ const CreatePage = () => {
 };
 
 export default CreatePage;
+
