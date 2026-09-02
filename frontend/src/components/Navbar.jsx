@@ -23,30 +23,30 @@ const Navbar = () => {
   };
 
   return (
-    <header className="border-b border-base-content/10 bg-base-300">
-      <div className="mx-auto max-w-6xl p-4">
-        <div className="flex items-center justify-between">
-          <div>
+    <header className="bg-base-100 py-6">
+      <div className="mx-auto max-w-4xl px-4">
+        <div className="mb-4 flex items-center justify-between rounded-2xl border border-base-content/10 bg-base-100 px-8 py-4 shadow-sm">
+          <div className="flex-1">
             <Link
               to="/"
-              className="font-mono text-3xl font-bold tracking-tighter text-primary"
+              className="block font-mono text-3xl font-black tracking-tight text-base-content"
             >
-              Thinkboard
+              THINKBOARD
             </Link>
 
             {user && (
-              <p className="mt-1 text-sm opacity-70">
+              <p className="mt-1 text-xs font-medium tracking-wide text-secondary">
                 Welcome, {user.name}
               </p>
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               to="/create"
-              className="btn btn-primary"
+              className="btn btn-sm btn-primary gap-1 px-4"
             >
-              <PlusIcon className="size-5" />
+              <PlusIcon className="size-4" />
               <span className="hidden sm:inline">
                 New Note
               </span>
@@ -54,10 +54,10 @@ const Navbar = () => {
 
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-sm btn-ghost"
               onClick={handleLogout}
             >
-              <LogOutIcon className="size-5" />
+              <LogOutIcon className="size-4" />
               <span className="hidden sm:inline">
                 Logout
               </span>
