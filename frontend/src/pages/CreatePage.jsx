@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 import ReminderForm from "../components/ReminderForm";
 import { useCategory } from "../context/CategoryContext";
@@ -76,160 +76,154 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8 md:px-8 md:py-12">
-      <Link
-        to="/"
-        className="mb-8 inline-flex items-center gap-2 text-secondary hover:text-base-content transition-colors"
-      >
-        <ArrowLeftIcon className="size-5" />
-        Back to notes
-      </Link>
+    <div className="min-h-full md:ml-64 bg-white">
+      <div className="max-w-2xl mx-auto px-6 md:px-8 py-8">
+        {/* Back Button */}
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-8"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Back to notes</span>
+        </Link>
 
-      <div className="rounded-2xl border border-base-content/10 bg-base-100 shadow-sm p-8 md:p-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-base-content mb-2">
-            Create New Note
-          </h1>
-          <p className="text-secondary">
-            Add a new note with category and optional reminder
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div>
-            <label
-              className="block text-sm font-semibold text-base-content mb-3"
-              htmlFor="title"
-            >
-              Title
-            </label>
-
-            <input
-              id="title"
-              type="text"
-              placeholder="Enter note title"
-              className="input input-bordered w-full bg-base-100 text-base-content placeholder-secondary/50 focus:outline-none focus:ring-2 focus:ring-base-content/20"
-              value={title}
-              onChange={(event) =>
-                setTitle(event.target.value)
-              }
-              maxLength={100}
-            />
+        {/* Form Container */}
+        <div className="bg-white border border-gray-200 rounded-lg p-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Create New Note
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Add a new note with category and optional reminder
+            </p>
           </div>
 
-          <div>
-            <label
-              className="block text-sm font-semibold text-base-content mb-3"
-              htmlFor="category"
-            >
-              Category
-            </label>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Title */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="title"
+              >
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                placeholder="Enter note title"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                maxLength={100}
+              />
+            </div>
 
-            {!showCustomInput ? (
-              <div className="flex gap-3">
-                <select
-                  id="category"
-                  className="select select-bordered flex-1 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-base-content/20"
-                  value={category}
-                  onChange={(event) =>
-                    setCategory(event.target.value)
-                  }
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+            {/* Category */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="category"
+              >
+                Category
+              </label>
 
-                <button
-                  type="button"
-                  className="rounded-lg border border-base-content/20 px-4 py-3 font-medium transition-all hover:border-base-content/40 hover:bg-base-200"
-                  onClick={() =>
-                    setShowCustomInput(true)
-                  }
-                >
-                  + Custom
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  placeholder="Enter custom category"
-                  className="input input-bordered flex-1 bg-base-100 text-base-content placeholder-secondary/50 focus:outline-none focus:ring-2 focus:ring-base-content/20"
-                  value={customCategory}
-                  onChange={(event) =>
-                    setCustomCategory(
-                      event.target.value
-                    )
-                  }
-                  maxLength={50}
-                />
+              {!showCustomInput ? (
+                <div className="flex gap-2">
+                  <select
+                    id="category"
+                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
 
-                <button
-                  type="button"
-                  className="rounded-lg border border-base-content/20 px-4 py-3 font-medium transition-all hover:border-base-content/40 hover:bg-base-200"
-                  onClick={() =>
-                    setShowCustomInput(false)
-                  }
-                >
-                  Use Category
-                </button>
-              </div>
-            )}
-          </div>
+                  <button
+                    type="button"
+                    className="px-4 py-2.5 border border-gray-200 rounded-lg text-gray-900 font-medium hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowCustomInput(true)}
+                  >
+                    + Custom
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter custom category"
+                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    value={customCategory}
+                    onChange={(event) =>
+                      setCustomCategory(event.target.value)
+                    }
+                    maxLength={50}
+                  />
 
-          <div>
+                  <button
+                    type="button"
+                    className="px-4 py-2.5 border border-gray-200 rounded-lg text-gray-900 font-medium hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowCustomInput(false)}
+                  >
+                    Use
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Reminder */}
             <ReminderForm
               initialReminder={reminder}
-              onReminderChange={
-                handleReminderChange
-              }
+              onReminderChange={handleReminderChange}
             />
-          </div>
 
-          <div>
-            <label
-              className="block text-sm font-semibold text-base-content mb-3"
-              htmlFor="content"
-            >
-              Content
-            </label>
+            {/* Content */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="content"
+              >
+                Content
+              </label>
+              <textarea
+                id="content"
+                placeholder="Write your note..."
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none min-h-64 font-base"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+                maxLength={5000}
+              />
+            </div>
 
-            <textarea
-              id="content"
-              placeholder="Write your note..."
-              className="textarea textarea-bordered w-full min-h-64 bg-base-100 text-base-content placeholder-secondary/50 focus:outline-none focus:ring-2 focus:ring-base-content/20 p-4 font-base resize-none"
-              value={content}
-              onChange={(event) =>
-                setContent(event.target.value)
-              }
-              maxLength={5000}
-            />
-          </div>
-
-          <div className="flex justify-end gap-3 pt-4">
-            <Link
-              to="/"
-              className="rounded-lg border border-base-content/20 px-6 py-3 font-medium transition-all hover:border-base-content/40 hover:bg-base-200"
-            >
-              Cancel
-            </Link>
-            <button
-              type="submit"
-              className="rounded-lg bg-base-content px-6 py-3 font-medium text-base-100 transition-all hover:shadow-md active:scale-95"
-              disabled={isSaving}
-            >
-              {isSaving ? "Creating..." : "Create Note"}
-            </button>
-          </div>
-        </form>
+            {/* Actions */}
+            <div className="flex justify-end gap-3 pt-4">
+              <Link
+                to="/"
+                className="px-6 py-2.5 border border-gray-200 rounded-lg text-gray-900 font-medium hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                disabled={isSaving}
+              >
+                {isSaving ? "Creating..." : "Create Note"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
 export default CreatePage;
+
 
 

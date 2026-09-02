@@ -71,14 +71,13 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-full md:ml-64">
-      <div className="max-w-6xl mx-auto px-8 py-12">
+    <div className="min-h-full md:ml-64 bg-white">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
+        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-base-content mb-2">
-              My Notes
-            </h1>
-            <p className="text-gray-600">
+            <h1 className="text-3xl font-bold text-gray-900">My Notes</h1>
+            <p className="text-gray-600 mt-1">
               Organize and manage your thoughts
             </p>
           </div>
@@ -87,17 +86,19 @@ const HomePage = () => {
             to="/create"
             className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition-colors font-medium"
           >
-            <Plus className="size-5" />
+            <Plus className="w-5 h-5" />
             New Note
           </Link>
         </div>
 
         {isRateLimited && <RateLimitedUI />}
 
+        {/* Category Filter */}
         <div className="mb-8">
           <CategoryTabs />
         </div>
 
+        {/* Content */}
         {isLoading && (
           <div className="flex items-center justify-center py-16">
             <span className="loading loading-spinner loading-lg" />
@@ -120,19 +121,20 @@ const HomePage = () => {
                 to={`/note/${note._id}`}
                 className="border border-gray-200 rounded-lg p-6 bg-white hover:shadow-md transition-shadow group"
               >
+                {/* Card Header */}
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <h2 className="text-lg font-semibold text-base-content group-hover:text-primary transition-colors line-clamp-2">
+                  <h2 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
                     {note.title}
                   </h2>
 
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 shrink-0">
                     {note.reminder?.enabled && (
                       <span className="text-lg" title="Has reminder">
                         🔔
                       </span>
                     )}
                     <span
-                      className={`text-xs font-medium px-2 py-1 rounded ${getCategoryColor(
+                      className={`text-xs font-medium px-2.5 py-1 rounded ${getCategoryColor(
                         note.category
                       )}`}
                     >
@@ -141,10 +143,12 @@ const HomePage = () => {
                   </div>
                 </div>
 
+                {/* Card Body */}
                 <p className="text-sm text-gray-600 line-clamp-3 mb-4">
                   {note.content}
                 </p>
 
+                {/* Card Footer */}
                 <p className="text-xs text-gray-500">
                   {new Date(note.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -162,6 +166,7 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
 
 
 

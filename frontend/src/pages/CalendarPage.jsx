@@ -9,7 +9,6 @@ const CalendarPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Set up reminders
   useReminders(notes);
 
   useEffect(() => {
@@ -40,7 +39,6 @@ const CalendarPage = () => {
   }, []);
 
   const handleAddNote = (date) => {
-    // Navigate to create page with date pre-selected
     navigate("/create", {
       state: { selectedDate: date },
     });
@@ -48,8 +46,8 @@ const CalendarPage = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
-        <div className="flex items-center justify-center py-16">
+      <div className="min-h-full md:ml-64 bg-white">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 py-8 flex items-center justify-center">
           <span className="loading loading-spinner loading-lg" />
         </div>
       </div>
@@ -57,22 +55,27 @@ const CalendarPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
-      <div className="mb-12">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-base-content">
-          Calendar View
-        </h1>
-        <p className="text-base text-secondary">
-          View your notes organized by date
-        </p>
-      </div>
+    <div className="min-h-full md:ml-64 bg-white">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Calendar</h1>
+          <p className="text-gray-600 mt-1">
+            View your notes organized by date
+          </p>
+        </div>
 
-      <CalendarView
-        notes={notes}
-        onAddNote={handleAddNote}
-      />
+        {/* Calendar View */}
+        <div className="bg-white rounded-lg border border-gray-200">
+          <CalendarView
+            notes={notes}
+            onAddNote={handleAddNote}
+          />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default CalendarPage;
+

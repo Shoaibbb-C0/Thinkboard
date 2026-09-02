@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import {
-  ArrowLeftIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import ReminderForm from "../components/ReminderForm";
 import { useCategory } from "../context/CategoryContext";
@@ -19,9 +12,7 @@ const NoteDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [showCustomInput, setShowCustomInput] = useState(
-    false
-  );
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const [customCategory, setCustomCategory] = useState("");
 
   const { id } = useParams();
@@ -31,25 +22,18 @@ const NoteDetailPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/notes/${id}`,
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${API_URL}/notes/${id}`, {
+          credentials: "include",
+        });
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Failed to fetch note"
-          );
+          throw new Error(data.message || "Failed to fetch note");
         }
 
         setNote(data);
-        setShowCustomInput(
-          !categories.includes(data.category)
-        );
+        setShowCustomInput(!categories.includes(data.category));
         if (!categories.includes(data.category)) {
           setCustomCategory(data.category);
         }
@@ -65,17 +49,11 @@ const NoteDetailPage = () => {
   }, [id, categories]);
 
   const handleReminderChange = (reminderData) => {
-    setNote({
-      ...note,
-      reminder: reminderData,
-    });
+    setNote({ ...note, reminder: reminderData });
   };
 
   const handleCategoryChange = (newCategory) => {
-    setNote({
-      ...note,
-      category: newCategory,
-    });
+    setNote({ ...note, category: newCategory });
   };
 
   const handleUpdate = async (event) => {
@@ -98,29 +76,24 @@ const NoteDetailPage = () => {
     setIsSaving(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/notes/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            title: note.title,
-            content: note.content,
-            category: finalCategory,
-            reminder: note.reminder,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/notes/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          title: note.title,
+          content: note.content,
+          category: finalCategory,
+          reminder: note.reminder,
+        }),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to update note"
-        );
+        throw new Error(data.message || "Failed to update note");
       }
 
       setNote(data);
@@ -144,20 +117,15 @@ const NoteDetailPage = () => {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/notes/${id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${API_URL}/notes/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to delete note"
-        );
+        throw new Error(data.message || "Failed to delete note");
       }
 
       toast.success("Note deleted successfully");
@@ -172,7 +140,7 @@ const NoteDetailPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="min-h-full md:ml-64 bg-white flex items-center justify-center">
         <span className="loading loading-spinner loading-lg" />
       </div>
     );
@@ -180,12 +148,12 @@ const NoteDetailPage = () => {
 
   if (!note) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">
-          Note not found
-        </h1>
-
-        <Link to="/" className="btn btn-primary">
+      <div className="min-h-full md:ml-64 bg-white flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-bold text-gray-900">Note not found</h1>
+        <Link
+          to="/"
+          className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+        >
           Return home
         </Link>
       </div>
@@ -193,165 +161,152 @@ const NoteDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="mx-auto max-w-2xl p-4 py-10">
-        <div className="mb-6 flex items-center justify-between">
-          <Link to="/" className="btn btn-ghost">
-            <ArrowLeftIcon className="size-5" />
-            Back
+    <div className="min-h-full md:ml-64 bg-white">
+      <div className="max-w-2xl mx-auto px-6 md:px-8 py-8">
+        {/* Header with Back & Delete */}
+        <div className="flex items-center justify-between mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
           </Link>
 
           <button
             type="button"
-            className="btn btn-error btn-outline"
+            className="inline-flex items-center gap-2 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
             onClick={handleDelete}
             disabled={isDeleting}
           >
-            <Trash2Icon className="size-5" />
-
+            <Trash2 className="w-5 h-5" />
             {isDeleting ? "Deleting..." : "Delete"}
           </button>
         </div>
 
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h1 className="card-title mb-4 text-2xl">
-              Edit Note
-            </h1>
+        {/* Form Container */}
+        <div className="bg-white border border-gray-200 rounded-lg p-8">
+          {/* Header */}
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            Edit Note
+          </h1>
 
-            <form onSubmit={handleUpdate}>
-              <div className="form-control mb-4">
-                <label className="label" htmlFor="title">
-                  <span className="label-text">
-                    Title
-                  </span>
-                </label>
-
-                <input
-                  id="title"
-                  type="text"
-                  className="input input-bordered w-full"
-                  value={note.title}
-                  onChange={(event) =>
-                    setNote({
-                      ...note,
-                      title: event.target.value,
-                    })
-                  }
-                  maxLength={100}
-                  required
-                />
-              </div>
-
-              <div className="form-control mb-4">
-                <label className="label" htmlFor="category">
-                  <span className="label-text">
-                    Category
-                  </span>
-                </label>
-
-                {!showCustomInput ? (
-                  <div className="flex gap-2">
-                    <select
-                      id="category"
-                      className="select select-bordered w-full"
-                      value={note.category}
-                      onChange={(event) =>
-                        handleCategoryChange(
-                          event.target.value
-                        )
-                      }
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-
-                    <button
-                      type="button"
-                      className="btn btn-outline"
-                      onClick={() =>
-                        setShowCustomInput(true)
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Enter custom category"
-                      className="input input-bordered w-full"
-                      value={customCategory}
-                      onChange={(event) =>
-                        setCustomCategory(
-                          event.target.value
-                        )
-                      }
-                      maxLength={50}
-                    />
-
-                    <button
-                      type="button"
-                      className="btn btn-outline"
-                      onClick={() =>
-                        setShowCustomInput(false)
-                      }
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <ReminderForm
-                initialReminder={note.reminder}
-                onReminderChange={
-                  handleReminderChange
+          {/* Form */}
+          <form onSubmit={handleUpdate} className="space-y-6">
+            {/* Title */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="title"
+              >
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                value={note.title}
+                onChange={(event) =>
+                  setNote({ ...note, title: event.target.value })
                 }
+                maxLength={100}
               />
+            </div>
 
-              <div className="form-control mb-6">
-                <label
-                  className="label"
-                  htmlFor="content"
-                >
-                  <span className="label-text">
-                    Content
-                  </span>
-                </label>
+            {/* Category */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="category"
+              >
+                Category
+              </label>
 
-                <textarea
-                  id="content"
-                  className="textarea textarea-bordered min-h-48 w-full"
-                  value={note.content}
-                  onChange={(event) =>
-                    setNote({
-                      ...note,
-                      content: event.target.value,
-                    })
-                  }
-                  maxLength={5000}
-                  required
-                />
-              </div>
+              {!showCustomInput ? (
+                <div className="flex gap-2">
+                  <select
+                    id="category"
+                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    value={note.category}
+                    onChange={(event) =>
+                      handleCategoryChange(event.target.value)
+                    }
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
 
-              <div className="card-actions justify-end">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSaving}
-                >
-                  {isSaving
-                    ? "Saving..."
-                    : "Save Changes"}
-                </button>
-              </div>
-            </form>
-          </div>
+                  <button
+                    type="button"
+                    className="px-4 py-2.5 border border-gray-200 rounded-lg text-gray-900 font-medium hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowCustomInput(true)}
+                  >
+                    +
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter custom category"
+                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    value={customCategory}
+                    onChange={(event) =>
+                      setCustomCategory(event.target.value)
+                    }
+                    maxLength={50}
+                  />
+
+                  <button
+                    type="button"
+                    className="px-4 py-2.5 border border-gray-200 rounded-lg text-gray-900 font-medium hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowCustomInput(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Reminder */}
+            <ReminderForm
+              initialReminder={note.reminder}
+              onReminderChange={handleReminderChange}
+            />
+
+            {/* Content */}
+            <div>
+              <label
+                className="block text-sm font-semibold text-gray-900 mb-2"
+                htmlFor="content"
+              >
+                Content
+              </label>
+              <textarea
+                id="content"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none min-h-64"
+                value={note.content}
+                onChange={(event) =>
+                  setNote({ ...note, content: event.target.value })
+                }
+                maxLength={5000}
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end pt-4">
+              <button
+                type="submit"
+                className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -359,3 +314,4 @@ const NoteDetailPage = () => {
 };
 
 export default NoteDetailPage;
+
